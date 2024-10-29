@@ -6,6 +6,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Set Global Prefix
+  app.setGlobalPrefix('api');
+
   // Enable Versioning
   app.enableVersioning({
     type: VersioningType.URI,
