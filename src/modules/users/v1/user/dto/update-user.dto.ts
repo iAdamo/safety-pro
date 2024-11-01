@@ -8,21 +8,21 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'The first name of the user',
     required: false,
   })
-  firstName: string;
+  firstName?: string;
 
   @ApiProperty({
     example: 'Doe',
     description: 'The last name of the user',
     required: false,
   })
-  lastName: string;
+  lastName?: string;
 
   @ApiProperty({
     example: 'johndoe',
     description: 'The username of the user',
     required: false,
   })
-  username: string;
+  username?: string;
 
   @ApiProperty({
     example: '1234567890',
