@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseFilters } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseFilters,
+} from '@nestjs/common';
 import { UserServiceV1 } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -10,28 +19,46 @@ import { User } from '../../schemas/users.schema';
 export class UserControllerV1 {
   constructor(private readonly userService: UserServiceV1) {}
 
+  // api/v1/users/register
   @Post('register')
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.create(createUserDto);
   }
 
+  // api/v1/users
   @Get()
   findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
 
+  // api/v1/users/1
   @Get(':id')
   findOne(@Param('id') id: string): Promise<User> {
     return this.userService.findOne(id);
   }
 
+  // api/v1/users/1
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<User> {
+  update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<User> {
     return this.userService.update(id, updateUserDto);
   }
 
+  // api/v1/users/1
   @Delete(':id')
   remove(@Param('id') id: string): Promise<User> {
     return this.userService.remove(id);
+  }
+
+  // api/v1/users/1/location
+  @Patch(':id/location')
+  updateLocation(
+    @Param('id') id: string,
+    @Body() locationDto: { latitude: number; longitude: number },
+  ): Promise<User> {
+    const { latitude, longitude } = locationDto;
+    return this.userService.updateLocation(id, latitude, longitude);
   }
 }
