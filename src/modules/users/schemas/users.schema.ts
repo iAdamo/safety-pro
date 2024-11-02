@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { Address, AddressSchema } from './address.schema';
+import { GeoLocation, GeoLocationSchema } from './location.schema';
 
 
 export type UserDocument = HydratedDocument<User>;
@@ -30,6 +32,12 @@ export class User {
 
   @Prop()
   profilePic: string;
+
+  @Prop({ type: AddressSchema })
+  address: Address;
+
+  @Prop({ type: GeoLocationSchema })
+  location: GeoLocation;
 
   @Prop({ default: 300 }) // Default proximity range in meters
   proximityRange: number;
