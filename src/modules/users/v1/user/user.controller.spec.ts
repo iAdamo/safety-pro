@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserControllerV1 } from './user.controller';
-import { UserServiceV1 } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { NotFoundException } from '@nestjs/common';
+
+import { UserControllerV1 } from '@controllers/user.controller';
+import { UserServiceV1 } from '@services/user.service';
+import { CreateUserDto } from '@dto/create-user.dto';
+import { UpdateUserDto } from '@dto/update-user.dto';
+
 
 describe('UserControllerV1', () => {
   let controller: UserControllerV1;
