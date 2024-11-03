@@ -46,12 +46,7 @@ describe('UserServiceV1', () => {
     it('should create a user', async () => {
       const createUserDto: CreateUserDto = {
         email: 'test@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        username: 'johndoe',
         password: 'password123',
-        phoneNumber: '1234567890',
-        otherNames: 'Johnathan',
       };
       const result = { ...createUserDto };
       jest.spyOn(model, 'findOne').mockReturnValue({
@@ -67,12 +62,7 @@ describe('UserServiceV1', () => {
     it('should throw a conflict exception if user already exists', async () => {
       const createUserDto: CreateUserDto = {
         email: 'test@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        username: 'johndoe',
         password: 'password123',
-        phoneNumber: '1234567890',
-        otherNames: 'Johnathan',
       };
       jest.spyOn(model, 'findOne').mockReturnValue({
         exec: jest.fn().mockResolvedValue(createUserDto),
@@ -84,12 +74,7 @@ describe('UserServiceV1', () => {
     it('should throw a bad request exception if email is missing', async () => {
       const createUserDto: CreateUserDto = {
         email: '',
-        firstName: 'John',
-        lastName: 'Doe',
-        username: 'johndoe',
         password: 'password123',
-        phoneNumber: '1234567890',
-        otherNames: 'Johnathan',
       };
 
       await expect(service.create(createUserDto)).rejects.toThrow(BadRequestException);
@@ -98,12 +83,7 @@ describe('UserServiceV1', () => {
     it('should throw a bad request exception if password is missing', async () => {
       const createUserDto: CreateUserDto = {
         email: 'test@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        username: 'johndoe',
         password: '',
-        phoneNumber: '1234567890',
-        otherNames: 'Johnathan',
       };
 
       await expect(service.create(createUserDto)).rejects.toThrow(BadRequestException);
@@ -183,6 +163,36 @@ describe('UserServiceV1', () => {
       });
 
       await expect(service.remove('1')).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('updateLocation', () => {
+    it('should update the user location', async () => {
+      const id = '1';
+      const latitude = 40.7128;
+      const longitude = -74.0060;
+      const user = { id, email: 'test@example.com', location: { type: 'Point', coordinates: [0, 0] } };
+      const updatedUser = { ...user, location: { type: 'Point', coordinates: [longitude, latitude] } };
+
+      jest.spyOn(model, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(user),
+      });
+      jest.spyOn(model, 'findByIdAndUpdate').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(updatedUser),
+      });
+
+      expect(await service.updateLocation(id, latitude, longitude)).toEqual(updatedUser);
+    });
+
+    it('should throw a not found exception if user does not exist', async () => {
+      const id = '1';
+      const latitude = 40.7128;
+      const longitude = -74.0060;
+      jest.spyOn(model, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
+      await expect(service.updateLocation(id, latitude, longitude)).rejects.toThrow(NotFoundException);
     });
   });
 });

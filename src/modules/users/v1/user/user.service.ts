@@ -21,9 +21,9 @@ export class UserServiceV1 {
     if (!createUserDto.password)
       throw new BadRequestException('Password is required');
 
-    const existingUser = await this.userModel.findOne({ email: createUserDto.email }).exec();
-
-    console.log(existingUser);
+    const existingUser = await this.userModel
+      .findOne({ email: createUserDto.email })
+      .exec();
 
     if (existingUser) {
       throw new ConflictException(
@@ -71,18 +71,22 @@ export class UserServiceV1 {
     return this.userModel.findByIdAndDelete(id).exec();
   }
 
-  async updateLocation(id: string, latitude: number, longitude: number): Promise<User> {
+  async updateLocation(
+    id: string,
+    latitude: number,
+    longitude: number,
+  ): Promise<User> {
     const user = await this.userModel.findById(id).exec();
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    user.location = {
+    const location = {
       type: 'Point',
       coordinates: [latitude, longitude],
     };
 
-    return user.save();
+    return this.userModel.findByIdAndUpdate(id, { location }, { new: true }).exec();
   }
 }
