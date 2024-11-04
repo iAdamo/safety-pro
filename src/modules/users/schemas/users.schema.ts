@@ -1,8 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { Address, AddressSchema } from './address.schema';
-import { GeoLocation, GeoLocationSchema } from './location.schema';
+
+import { Address, AddressSchema } from '@schemas/address.schema';
+import { GeoLocation, GeoLocationSchema } from '@schemas/location.schema';
 
 
 export type UserDocument = HydratedDocument<User>;

@@ -1,10 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
-import { UserServiceV1 } from './user.service';
-import { User } from '../../schemas/users.schema';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  ConflictException,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
+
+import { UserServiceV1 } from '@services/user.service';
+import { User } from '@schemas/users.schema';
+import { CreateUserDto } from '@dto/create-user.dto';
+import { UpdateUserDto } from '@dto/update-user.dto';
+
 
 class MockUserModel {
   constructor(private data: CreateUserDto) {

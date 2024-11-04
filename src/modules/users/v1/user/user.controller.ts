@@ -6,13 +6,13 @@ import {
   Patch,
   Param,
   Delete,
-  UseFilters,
 } from '@nestjs/common';
-import { UserServiceV1 } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { User } from '../../schemas/users.schema';
+
+import { UserServiceV1 } from '@services/user.service';
+import { CreateUserDto } from '@dto/create-user.dto';
+import { UpdateUserDto } from '@dto/update-user.dto';
+import { User } from '@schemas/users.schema';
 
 @ApiTags('users')
 @Controller({ version: '1', path: 'users' })
