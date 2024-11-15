@@ -19,13 +19,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   lastName?: string;
 
   @ApiProperty({
-    example: 'johndoe',
-    description: 'The username of the user',
-    required: false,
-  })
-  username?: string;
-
-  @ApiProperty({
     example: '1234567890',
     description: 'The phone number of the user',
     required: false,
