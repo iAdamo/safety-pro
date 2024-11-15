@@ -40,8 +40,15 @@ export class UserServiceV1 {
     return this.userModel.find().exec();
   }
 
-  async findOne(id: string): Promise<User> {
-    const user = await this.userModel.findById(id).exec();
+  async findOne(query: { id?: string; email?: string }): Promise<User> {
+    const { id, email } = query;
+    let user: User | null;
+
+    if (id) {
+      user = await this.userModel.findById(id).exec();
+    } else if (email) {
+      user = await this.userModel.findOne({ email }).exec();
+    }
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -88,6 +95,8 @@ export class UserServiceV1 {
       coordinates: [latitude, longitude],
     };
 
-    return this.userModel.findByIdAndUpdate(id, { location }, { new: true }).exec();
+    return this.userModel
+      .findByIdAndUpdate(id, { location }, { new: true })
+      .exec();
   }
 }

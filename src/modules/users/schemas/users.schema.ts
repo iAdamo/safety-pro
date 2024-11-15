@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument} from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 import { Address, AddressSchema } from '@schemas/address.schema';
@@ -10,9 +10,6 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema({ timestamps: true })
 export class User {
-  @Prop({ unique: true })
-  username: string;
-
   @Prop()
   firstName: string;
 
@@ -25,7 +22,7 @@ export class User {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true, select: false })
+  @Prop({ required: true })
   password: string;
 
   @Prop({ unique: true })
@@ -60,3 +57,14 @@ UserSchema.pre<UserDocument>('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
   next();
 })
+
+// remove password from the user object before sending it to the client
+UserSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    delete ret.password;
+    delete ret.__v;
+    delete ret.createdAt;
+    delete ret.updatedAt;
+    return ret;
+  },
+});
