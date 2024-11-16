@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument} from 'mongoose';
 import * as bcrypt from 'bcrypt';
-
+import { v4 as uuidv4 } from 'uuid';
 import { Address, AddressSchema } from '@schemas/address.schema';
 import { GeoLocation, GeoLocationSchema } from '@schemas/location.schema';
 
@@ -25,7 +25,7 @@ export class User {
   @Prop({ required: true })
   password: string;
 
-  @Prop({ unique: true })
+  @Prop({ unique: true, default: uuidv4 })
   phoneNumber: string;
 
   @Prop()
@@ -42,6 +42,18 @@ export class User {
 
   @Prop({ enum: ['basic', 'premium'], default: 'basic' })
   role: string;
+
+  @Prop()
+  code: string;
+
+  @Prop()
+  codeAt: Date;
+
+  @Prop({ default: false })
+  verified: boolean;
+
+  @Prop({ default: false })
+  forgetPassword: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
@@ -65,6 +77,10 @@ UserSchema.set('toJSON', {
     delete ret.__v;
     delete ret.createdAt;
     delete ret.updatedAt;
+    delete ret.code;
+    delete ret.codeAt;
+    delete ret.verified;
+    delete ret.forgetPassword;
     return ret;
   },
 });

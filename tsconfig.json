@@ -13,7 +13,7 @@
     "baseUrl": "./",
     "paths": {
       "@config/*": ["src/config/*"],
-      "@modules/*": ["src/modules/users/*", "src/modules/map/*", "src/modules/auth/*"],
+      "@modules/*": ["src/modules/users/*", "src/modules/email/*", "src/modules/auth/*"],
       "@auth/*": ["src/modules/auth/*"],
       "@schemas/*": ["src/modules/users/schemas/*", "src/modules/map/schemas/*"],
       "@dto/*": ["src/modules/users/v1/user/dto/*", "src/modules/map/v1/map/dto/*"],

@@ -33,12 +33,15 @@
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.14.1",
     "csurf": "^1.10.0",
+    "mailtrap": "^3.4.0",
     "mongoose": "^8.7.3",
+    "nodemailer": "^6.9.16",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -48,6 +51,7 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
+    "@types/nodemailer": "^6.4.16",
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
