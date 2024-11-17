@@ -54,13 +54,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   proximityRange?: number;
 
   @ApiProperty({
-    example: '123456',
-    description: 'The password of the user',
-    required: false,
-  })
-  password?: string;
-
-  @ApiProperty({
     example: {
       street: '123 Main St',
       city: 'Lagos',

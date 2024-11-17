@@ -40,7 +40,10 @@ export class UserServiceV1 {
     return this.userModel.find().exec();
   }
 
-  async findOne(query: { id?: string; email?: string }): Promise<User> {
+  async findOne(query: {
+    id?: string;
+    email?: string;
+  }): Promise<User> {
     const { id, email } = query;
     let user: User | null;
 
@@ -48,6 +51,8 @@ export class UserServiceV1 {
       user = await this.userModel.findById(id).exec();
     } else if (email) {
       user = await this.userModel.findOne({ email }).exec();
+    } else {
+      throw new BadRequestException('Query is required');
     }
 
     if (!user) {

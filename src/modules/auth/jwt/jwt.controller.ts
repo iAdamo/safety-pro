@@ -30,4 +30,27 @@ export class JwtController {
       email: user.email,
     });
   }
+
+  @Post('logout')
+  async logout(@Res() res: Response) {
+    res.clearCookie('Authentication');
+    return res.status(200).json({
+      message: 'Logout successful',
+    });
+  }
+
+  @Post('verify-email')
+  async verifyEmail(@Body() body: { email: string }) {
+    return this.jwtService.getVerificationCode(body);
+  }
+
+  @Post('verify-code')
+  async verifyCode(@Body() body: { code: string }) {
+    return this.jwtService.verifyCode(body);
+  }
+
+  @Post('reset-password')
+  async resetPassword(@Body() body: { email: string; password: string }) {
+    return this.jwtService.resetPassword(body);
+  }
 }
