@@ -93,11 +93,11 @@ export class JwtService {
     return { message: 'Verification code sent' };
   }
 
-  async verifyCode({ code }) {
-    if (!code) {
-      throw new BadRequestException('Code is required');
+  async verifyEmail({ code, email }) {
+    if (!code || !email) {
+      throw new BadRequestException('Code and email are required');
     }
-    const user = await this.userModel.findOne({ code }).exec();
+    const user = await this.userModel.findOne({ email }).exec();
     // check if the code is still valid
     if (user && user.codeAt) {
       const codeAt = new Date(user.codeAt);
@@ -110,12 +110,24 @@ export class JwtService {
       }
 
       // clear the code and codeAt
-      await this.userModel
+      if (user.code === code && !user.verified) {
+        await this.userModel.findOneAndUpdate(
+          user['_id'],
+          {
+            code: null,
+            codeAt: null,
+            verified: true,
+          },
+          { new: true, upsert: false },
+        );
+      } else if (user.code === code && user.verified) {
+        await this.userModel
         .findOneAndUpdate(
           { _id: user['_id'] },
           { code: null, codeAt: null, forgetPassword: true },
         )
         .exec();
+      }
 
       return { message: 'Code verified' };
     }
@@ -134,6 +146,7 @@ export class JwtService {
         user['_id'],
         {
           password: hashedPassword,
+          forgetPassword: false,
         },
         { new: true, upsert: false },
       );
