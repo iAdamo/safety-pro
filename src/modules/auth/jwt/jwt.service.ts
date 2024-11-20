@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService as NestJwtService } from '@nestjs/jwt';
-import { User } from '@schemas/users.schema';
+import { User, UserDocument } from '@schemas/users.schema';
 import { Model } from 'mongoose';
 import { MailtrapClient } from 'mailtrap';
 import { CreateUserDto } from '@dto/create-user.dto';
@@ -39,10 +39,20 @@ export class JwtService {
     return createdUser.save();
   }
 
+  /**
+   * Find all users
+   * @returns User[]
+   */
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
   }
 
+  /**
+   * Validate user
+   * @param email
+   * @param password
+   * @returns User
+   */
   async validateUser(email: string, password: string): Promise<User> {
     if (!email && !password) {
       throw new BadRequestException('Email and password are required');
@@ -50,7 +60,7 @@ export class JwtService {
     const user = await this.userModel.findOne({ email });
 
     if (user) {
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+      const isPasswordValid = user.comparePassword(password);
 
       if (!isPasswordValid) {
         throw new UnauthorizedException('Password is invalid');
@@ -164,6 +174,7 @@ export class JwtService {
     const user = await this.userModel.findOne({ email });
 
     if (user && user.forgetPassword) {
+      user.save(password);
       const hashedPassword = await bcrypt.hash(password, 10);
       await this.userModel.findOneAndUpdate(
         user['_id'],
