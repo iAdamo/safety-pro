@@ -3,11 +3,18 @@ import { JwtService } from './jwt.service';
 import { Response } from 'express';
 import { LoginDto } from './dto/login.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateUserDto } from '@dto/create-user.dto';
 
 @Controller('auth')
 @ApiTags('auth')
 export class JwtController {
   constructor(private readonly jwtService: JwtService) {}
+
+  // api/auth/register
+  @Post('register')
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.jwtService.create(createUserDto);
+  }
 
   @Post('login')
   async login(@Body() loginDto: LoginDto, @Res() res: Response) {
@@ -45,7 +52,7 @@ export class JwtController {
   }
 
   @Post('verify-email')
-  async verifyEmail(@Body() body: { code: string }) {
+  async verifyEmail(@Body() body: { email: string; code: string }) {
     return this.jwtService.verifyEmail(body);
   }
 
