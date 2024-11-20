@@ -22,12 +22,6 @@ import { JwtAuthGuard } from '@auth/jwt/jwt.guard';
 export class UserControllerV1 {
   constructor(private readonly userService: UserServiceV1) {}
 
-  // api/v1/users/register
-  @Post('register')
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.userService.create(createUserDto);
-  }
-
   // api/v1/users
   @Get()
   findAll(): Promise<User[]> {

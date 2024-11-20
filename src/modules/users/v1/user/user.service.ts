@@ -15,35 +15,11 @@ import { UpdateUserDto } from '@dto/update-user.dto';
 export class UserServiceV1 {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    if (!createUserDto.email)
-      throw new BadRequestException('Email is required');
-
-    if (!createUserDto.password)
-      throw new BadRequestException('Password is required');
-
-    const existingUser = await this.userModel
-      .findOne({ email: createUserDto.email })
-      .exec();
-
-    if (existingUser) {
-      throw new ConflictException(
-        'User with this email or username already exists',
-      );
-    }
-
-    const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
-  }
-
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
   }
 
-  async findOne(query: {
-    id?: string;
-    email?: string;
-  }): Promise<User> {
+  async findOne(query: { id?: string; email?: string }): Promise<User> {
     const { id, email } = query;
     let user: User | null;
 

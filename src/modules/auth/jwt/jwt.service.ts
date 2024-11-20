@@ -7,18 +7,41 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService as NestJwtService } from '@nestjs/jwt';
-import { UserServiceV1 } from '@services/user.service';
 import { User } from '@schemas/users.schema';
 import { Model } from 'mongoose';
 import { MailtrapClient } from 'mailtrap';
-
+import { CreateUserDto } from '@dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class JwtService {
   constructor(
     private readonly jwtService: NestJwtService,
     @InjectModel(User.name) private userModel: Model<User>,
   ) {}
+
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    if (!createUserDto.email)
+      throw new BadRequestException('Email is required');
+
+    if (!createUserDto.password)
+      throw new BadRequestException('Password is required');
+
+    const existingUser = await this.userModel
+      .findOne({ email: createUserDto.email })
+      .exec();
+
+    if (existingUser) {
+      throw new ConflictException('User with this email already exists');
+    }
+
+    const createdUser = new this.userModel(createUserDto);
+    return createdUser.save();
+  }
+
+  async findAll(): Promise<User[]> {
+    return this.userModel.find().exec();
+  }
 
   async validateUser(email: string, password: string): Promise<User> {
     if (!email && !password) {
@@ -122,11 +145,11 @@ export class JwtService {
         );
       } else if (user.code === code && user.verified) {
         await this.userModel
-        .findOneAndUpdate(
-          { _id: user['_id'] },
-          { code: null, codeAt: null, forgetPassword: true },
-        )
-        .exec();
+          .findOneAndUpdate(
+            { _id: user['_id'] },
+            { code: null, codeAt: null, forgetPassword: true },
+          )
+          .exec();
       }
 
       return { message: 'Code verified' };
