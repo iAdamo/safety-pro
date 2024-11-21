@@ -11,7 +11,6 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { UserServiceV1 } from '@services/user.service';
-import { CreateUserDto } from '@dto/create-user.dto';
 import { UpdateUserDto } from '@dto/update-user.dto';
 import { User } from '@schemas/users.schema';
 
@@ -29,7 +28,7 @@ export class UserControllerV1 {
   }
 
   // api/v1/users/1
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string): Promise<User> {
     return this.userService.findOne({ id });

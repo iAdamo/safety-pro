@@ -13,12 +13,27 @@
     "baseUrl": "./",
     "paths": {
       "@config/*": ["src/config/*"],
-      "@modules/*": ["src/modules/users/*", "src/modules/email/*", "src/modules/auth/*"],
+      "@modules/*": [
+        "src/modules/users/*",
+        "src/modules/email/*",
+        "src/modules/auth/*"
+      ],
       "@auth/*": ["src/modules/auth/*"],
-      "@schemas/*": ["src/modules/users/schemas/*", "src/modules/map/schemas/*"],
-      "@dto/*": ["src/modules/users/v1/user/dto/*", "src/modules/map/v1/map/dto/*"],
-      "@controllers/*": ["src/modules/users/v1/user/*", "src/modules/map/v1/map/*"],
-      "@services/*": ["src/modules/users/v1/user/*", "src/modules/map/v1/map/*"],
+      "@schemas/*": [
+        "src/modules/users/schemas/*",
+        "src/modules/map/schemas/*"
+      ],
+      "@dto/*": ["src/modules/users/v1/user/dto/*", "src/modules/map/dto/*"],
+      "@controllers/*": [
+        "src/modules/users/v1/user/*",
+        "src/modules/auth/*",
+        "src/modules/map/v1/map/*"
+      ],
+      "@services/*": [
+        "src/modules/users/v1/user/*",
+        "src/modules/auth/*",
+        "src/modules/map/v1/map/*"
+      ]
     },
     "incremental": true,
     "skipLibCheck": true,

@@ -8,14 +8,14 @@ import {
   IsNotEmpty,
 } from 'class-validator';
 
-export class CreateUnsafeDto {
+export class CreateUnsafeZoneDto {
   @ApiProperty({
     description: 'ID of the user who reported the unsafe zone',
     example: '60c72b2f9b1e8b001c8e4d3a',
   })
   @IsNotEmpty()
   @IsString()
-  user: string;
+  markedBy: string;
 
   @ApiProperty({
     description: 'Location of the unsafe zone',
