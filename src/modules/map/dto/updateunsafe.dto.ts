@@ -2,7 +2,7 @@ import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsString, IsNumber, IsEnum, IsOptional, IsBoolean, IsNotEmpty } from 'class-validator';
 import { CreateUnsafeZoneDto } from '../dto/createunsafe.dto';
 
-export class UpdateUnsafeDto extends PartialType(CreateUnsafeZoneDto) {
+export class UpdateUnsafeZoneDto extends PartialType(CreateUnsafeZoneDto) {
   @ApiProperty({
     description: 'Location of the unsafe zone',
     example: {
@@ -10,19 +10,6 @@ export class UpdateUnsafeDto extends PartialType(CreateUnsafeZoneDto) {
       coordinates: [-122.4194, 37.7749],
     },
   })
-  @IsOptional()
-  location?: {
-    type: string;
-    coordinates: [number, number];
-  };
-
-  @ApiProperty({
-    description: 'Radius of the unsafe zone in meters',
-    example: 100,
-  })
-  @IsOptional()
-  @IsNumber()
-  radius?: number;
 
   @ApiProperty({
     description: 'Severity level of the unsafe zone',
