@@ -6,6 +6,7 @@ import { CreateUnsafeZoneDto } from '@dto/createunsafe.dto';
 import { UpdateUnsafeZoneDto } from '@dto/updateunsafe.dto';
 import { UserServiceV1 } from '@services/user.service';
 import { NotFoundException } from '@nestjs/common';
+import { isWithProximity } from 'src/utils/iswithproximity';
 
 @Injectable()
 export class MapService {
@@ -49,8 +50,53 @@ export class MapService {
       throw new NotFoundException('Unsafe zone not found');
     }
 
-    return this.unsafeZoneModel.findByIdAndUpdate(id, updateUnsafeZoneDto, {
-      new: true,
-    }).exec();
+    return this.unsafeZoneModel
+      .findByIdAndUpdate(id, updateUnsafeZoneDto, {
+        new: true,
+      })
+      .exec();
+  }
+
+  async findUnsafeZones(
+    id: string,
+    userLat: number,
+    userLong: number,
+    proximityRange: number,
+  ) {
+    if (!id || !userLat || !userLong) {
+      throw new NotFoundException('Query is required');
+    }
+
+    let userRange = proximityRange;
+
+    if (!proximityRange) {
+      const user = await this.userServiceV1.findOne({ id });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      userRange = user.proximityRange;
+    }
+
+    const maxRadius = userRange + 100;
+    const unsafeZones = await this.unsafeZoneModel
+      .find({
+        location: {
+          $geoWithin: {
+            $centerSphere: [[userLong, userLat], maxRadius / 6371],
+          },
+        },
+      })
+      .exec();
+
+    return unsafeZones.filter((unsafeZone) =>
+      isWithProximity(
+        userLat,
+        userLong,
+        unsafeZone.location.coordinates[1],
+        unsafeZone.location.coordinates[0],
+        userRange,
+        unsafeZone.radius,
+      ),
+    );
   }
 }

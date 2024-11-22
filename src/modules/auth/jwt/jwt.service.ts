@@ -17,7 +17,7 @@ import * as bcrypt from 'bcrypt';
 export class JwtService {
   constructor(
     private readonly jwtService: NestJwtService,
-    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -60,15 +60,15 @@ export class JwtService {
     const user = await this.userModel.findOne({ email });
 
     if (user) {
-      const isPasswordValid = user.comparePassword(password);
+      const isPasswordValid = await user.comparePassword(password);
 
       if (!isPasswordValid) {
-        throw new UnauthorizedException('Password is invalid');
+        throw new UnauthorizedException('Password is incorrect');
       }
 
       return user;
     } else {
-      throw new UnauthorizedException('Email is invalid');
+      throw new UnauthorizedException('Account does not exist');
     }
   }
 
@@ -141,9 +141,17 @@ export class JwtService {
       if (diffMinutes > 30) {
         throw new BadRequestException('Code has expired');
       }
+    }
 
-      // clear the code and codeAt
-      if (user.code === code && !user.verified) {
+    if (user.code === code) {
+      if (user.verified) {
+        await this.userModel
+          .findOneAndUpdate(
+            { _id: user['_id'] },
+            { code: null, codeAt: null, forgetPassword: true },
+          )
+          .exec();
+      } else {
         await this.userModel.findOneAndUpdate(
           user['_id'],
           {
@@ -153,18 +161,11 @@ export class JwtService {
           },
           { new: true, upsert: false },
         );
-      } else if (user.code === code && user.verified) {
-        await this.userModel
-          .findOneAndUpdate(
-            { _id: user['_id'] },
-            { code: null, codeAt: null, forgetPassword: true },
-          )
-          .exec();
       }
-
       return { message: 'Code verified' };
     }
-    return { message: 'Code is invalid' };
+
+    throw new BadRequestException('Code is invalid');
   }
 
   async resetPassword({ email, password }) {
@@ -174,7 +175,6 @@ export class JwtService {
     const user = await this.userModel.findOne({ email });
 
     if (user && user.forgetPassword) {
-      user.save(password);
       const hashedPassword = await bcrypt.hash(password, 10);
       await this.userModel.findOneAndUpdate(
         user['_id'],

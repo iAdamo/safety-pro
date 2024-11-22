@@ -13,7 +13,7 @@ export class UnsafeZone {
   @Prop({ type: GeoLocationSchema, required: true })
   location: GeoLocation;
 
-  @Prop({ required: true })
+  @Prop({ default: 10 })
   radius: number;
 
   @Prop({ required: true, enum: ['low', 'medium', 'high'] })
