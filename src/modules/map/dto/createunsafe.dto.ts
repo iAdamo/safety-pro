@@ -31,6 +31,14 @@ export class CreateUnsafeZoneDto {
   };
 
   @ApiProperty({
+    description: 'Radius of the unsafe zone',
+    example: 10,
+  })
+  @IsOptional()
+  @IsNumber()
+  radius?: number;
+
+  @ApiProperty({
     description: 'Severity level of the unsafe zone',
     example: 'high',
     enum: ['low', 'medium', 'high'],
