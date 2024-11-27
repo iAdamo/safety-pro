@@ -6,6 +6,7 @@ import databaseConfig from '@config/database.config';
 import { UsersModule } from '@modules/users.module';
 import { AuthModule } from '@modules/auth.module';
 import { MapModule } from './modules/map/map.module';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MapModule } from './modules/map/map.module';
     UsersModule,
     AuthModule,
     MapModule,
+    NotificationModule,
   ],
   controllers: [],
   providers: [],

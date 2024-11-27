@@ -3,7 +3,8 @@ const serviceAccount = require('../../serviceAccountKey.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-  databaseURL: 'https://<mydb>.firebaseio.com'
+  databaseURL: 'https://<-default->.firebaseio.com'
 });
 
-export default admin;
+export const db = admin.firestore();
+export const messaging = admin.messaging();
