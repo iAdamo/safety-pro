@@ -33,8 +33,10 @@ export class JwtController {
 
     return res.status(200).json({
       message: 'Login successful',
-      userId: user['_id'],
+      id: user['_id'],
       email: user.email,
+      verified: user.verified,
+      proximity: user.proximityRange,
     });
   }
 
@@ -48,16 +50,16 @@ export class JwtController {
 
   @Post('send-code')
   async sendCode(@Body() body: { email: string }) {
-    return this.jwtService.getVerificationCode(body);
+    return this.jwtService.getVerificationCode(body.email);
   }
 
   @Post('verify-email')
   async verifyEmail(@Body() body: { email: string; code: string }) {
-    return this.jwtService.verifyEmail(body);
+    return this.jwtService.verifyEmail(body.code, body.email);
   }
 
   @Post('reset-password')
   async resetPassword(@Body() body: { email: string; password: string }) {
-    return this.jwtService.resetPassword(body);
+    return this.jwtService.resetPassword(body.email, body.password);
   }
 }

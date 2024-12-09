@@ -18,6 +18,14 @@ export class CreateUnsafeZoneDto {
   markedBy: string;
 
   @ApiProperty({
+    description: 'Name of the unsafe zone',
+    example: 'High crime area',
+  })
+  @IsNotEmpty()
+  @IsString()
+  title: string;
+
+  @ApiProperty({
     description: 'Location of the unsafe zone',
     example: {
       type: 'Point',
@@ -40,12 +48,12 @@ export class CreateUnsafeZoneDto {
 
   @ApiProperty({
     description: 'Severity level of the unsafe zone',
-    example: 'high',
-    enum: ['low', 'medium', 'high'],
+    example: 'High',
+    enum: ['Low', 'Medium', 'High'],
   })
   @IsNotEmpty()
-  @IsEnum(['low', 'medium', 'high'])
-  severityLevel: 'low' | 'medium' | 'high';
+  @IsEnum(['Low', 'Medium', 'High'])
+  severityLevel: 'Low' | 'Medium' | 'High';
 
   @ApiProperty({
     description: 'Description of the unsafe zone',

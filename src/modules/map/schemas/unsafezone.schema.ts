@@ -10,6 +10,9 @@ export class UnsafeZone {
   @Prop({ required: true })
   markedBy: string;
 
+  @Prop({ required: true })
+  title: string;
+
   @Prop({ type: GeoLocationSchema, required: true })
   location: GeoLocation;
 
@@ -26,6 +29,9 @@ export class UnsafeZone {
   audio: string;
 
   @Prop()
+  image: string;
+
+  @Prop()
   video: string;
 
   @Prop({ default: false })
@@ -37,11 +43,9 @@ export class UnsafeZone {
 
 export const UnsafeZoneSchema = SchemaFactory.createForClass(UnsafeZone);
 
-UserSchema.set('toJSON', {
+UnsafeZoneSchema.set('toJSON', {
   transform: (doc, ret) => {
     delete ret.__v;
-    delete ret.createdAt;
-    delete ret.updatedAt;
     return ret;
   },
 });

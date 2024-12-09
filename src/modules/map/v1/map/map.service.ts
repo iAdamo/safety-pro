@@ -68,7 +68,6 @@ export class MapService {
     }
 
     let userRange = proximityRange;
-
     if (!proximityRange) {
       const user = await this.userServiceV1.findOne({ id });
       if (!user) {

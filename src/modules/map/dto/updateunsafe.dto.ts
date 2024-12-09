@@ -13,12 +13,12 @@ export class UpdateUnsafeZoneDto extends PartialType(CreateUnsafeZoneDto) {
 
   @ApiProperty({
     description: 'Severity level of the unsafe zone',
-    example: 'high',
-    enum: ['low', 'medium', 'high'],
+    example: 'High',
+    enum: ['Low', 'Medium', 'High'],
   })
   @IsOptional()
-  @IsEnum(['low', 'medium', 'high'])
-  severityLevel?: 'low' | 'medium' | 'high';
+  @IsEnum(['Low', 'Medium', 'High'])
+  severityLevel?: 'Low' | 'Medium' | 'High';
 
   @ApiProperty({
     description: 'Description of the unsafe zone',
@@ -35,6 +35,14 @@ export class UpdateUnsafeZoneDto extends PartialType(CreateUnsafeZoneDto) {
   @IsOptional()
   @IsString()
   audio?: string;
+
+  @ApiProperty({
+    description: 'Image evidence of the unsafe zone',
+    example: 'https://example.com/image.jpg',
+  })
+  @IsOptional()
+  @IsString()
+  image?: string;
 
   @ApiProperty({
     description: 'Video evidence of the unsafe zone',
