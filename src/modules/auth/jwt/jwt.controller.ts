@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Res } from '@nestjs/common';
 import { JwtService } from './jwt.service';
 import { Response } from 'express';
-import { LoginDto } from './dto/login.dto';
+import { LoginDto } from '@dto/login.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from '@dto/create-user.dto';
 

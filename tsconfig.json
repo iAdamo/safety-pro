@@ -15,24 +15,34 @@
       "@config/*": ["src/config/*"],
       "@modules/*": [
         "src/modules/users/*",
-        "src/modules/email/*",
-        "src/modules/auth/*"
+        "src/modules/auth/*",
+        "src/modules/map/*",
+        "src/modules/media/*"
       ],
-      "@auth/*": ["src/modules/auth/*"],
       "@schemas/*": [
         "src/modules/users/schemas/*",
-        "src/modules/map/schemas/*"
+        "src/modules/map/schemas/*",
+        "src/modules/media/schemas/*"
       ],
-      "@dto/*": ["src/modules/users/v1/user/dto/*", "src/modules/map/dto/*"],
+      "@dto/*": [
+        "src/modules/users/v1/user/dto/*",
+        "src/modules/map/dto/*",
+        "src/modules/auth/dto/*",
+        "src/modules/media/dto/*"
+      ],
       "@controllers/*": [
         "src/modules/users/v1/user/*",
         "src/modules/auth/*",
-        "src/modules/map/v1/map/*"
+        "src/modules/map/v1/map/*",
+        "src/modules/media/*"
       ],
       "@services/*": [
         "src/modules/users/v1/user/*",
         "src/modules/auth/*",
-        "src/modules/map/v1/map/*"
+        "src/modules/map/v1/map/*",
+        "src/modules/media/*",
+        "src/modules/media/dbstorage/*",
+        "src/modules/media/cloudstorage/*"
       ]
     },
     "incremental": true,

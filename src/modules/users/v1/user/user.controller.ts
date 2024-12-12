@@ -14,7 +14,7 @@ import { UserServiceV1 } from '@services/user.service';
 import { UpdateUserDto } from '@dto/update-user.dto';
 import { User } from '@schemas/users.schema';
 
-import { JwtAuthGuard } from '@auth/jwt/jwt.guard';
+import { JwtAuthGuard } from '@modules/jwt/jwt.guard';
 
 @ApiTags('users')
 @Controller({ version: '1', path: 'users' })

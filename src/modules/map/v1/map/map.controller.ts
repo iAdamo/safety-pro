@@ -13,7 +13,7 @@ import { MapService } from '@services/map.service';
 import { CreateUnsafeZoneDto } from '@dto/createunsafe.dto';
 import { UpdateUnsafeZoneDto } from '@dto/updateunsafe.dto';
 import { UnsafeZone } from '@schemas/unsafezone.schema';
-import { JwtAuthGuard } from '@auth/jwt/jwt.guard';
+import { JwtAuthGuard } from '@modules/jwt/jwt.guard';
 
 @Controller('unsafezone')
 export class MapController {
