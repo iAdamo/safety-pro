@@ -6,6 +6,9 @@ export type MediaDocument = HydratedDocument<Media>;
 @Schema({ timestamps: true })
 export class Media {
     @Prop({ required: true })
+    markedBy: string;
+  
+    @Prop({ required: true })
     url: string;
 
     @Prop({ required: true })
