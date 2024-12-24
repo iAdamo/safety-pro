@@ -13,7 +13,7 @@ export class CreateMediaDto {
       })
     @IsNotEmpty()
     @IsString()
-    markedBy: string;
+    uploadedBy: string;
 
     @ApiProperty({ example: 'https://example.com/image.jpg', description: 'The URL of the media' })
     @IsUrl()
