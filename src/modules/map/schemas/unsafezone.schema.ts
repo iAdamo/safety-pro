@@ -1,15 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { GeoLocation, GeoLocationSchema } from '@schemas/location.schema';
-import { User, UserSchema } from '@schemas/users.schema';
-import { Media,  MediaSchema } from '@schemas/media.schema';
+import { User } from '@schemas/users.schema';
+import { Media, MediaSchema } from '@schemas/media.schema';
 
 export type UnsafeZoneDocument = HydratedDocument<UnsafeZone>;
 
 @Schema({ timestamps: true })
 export class UnsafeZone {
-  @Prop({ required: true })
-  markedBy: string;
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  markedBy: User;
 
   @Prop({ required: true })
   title: string;

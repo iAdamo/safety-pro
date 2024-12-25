@@ -23,6 +23,7 @@ export class JwtController {
       loginDto.password,
     );
     const token = await this.jwtService.login(user);
+    console.log(token);
 
     res.cookie('Authentication', token.access_token, {
       httpOnly: true,

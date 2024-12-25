@@ -57,6 +57,29 @@ export class MapService {
       .exec();
   }
 
+  /**
+   * Find all by a user
+   * @param id The user ID
+   * @returns The unsafe zones created by the user
+   */
+  async findAllByUser(userId: string): Promise<UnsafeZone[]> {
+    const unsafeZones = await this.unsafeZoneModel
+      .find({ markedBy: userId })
+      .exec();
+    if (!unsafeZones || unsafeZones.length === 0) {
+      throw new NotFoundException('No unsafe zones found for this user');
+    }
+    return unsafeZones;
+  }
+
+  /**
+   * Find unsafe zones near a user
+   * @param id The user ID
+   * @param userLat The user's latitude
+   * @param userLong The user's longitude
+   * @param proximityRange The user's proximity range
+   * @returns The unsafe zones near the user
+   */
   async findUnsafeZones(
     id: string,
     userLat: number,
@@ -84,6 +107,7 @@ export class MapService {
             $centerSphere: [[userLong, userLat], maxRadius / 6371],
           },
         },
+        markedBy: { $ne: id }, // Exclude unsafe zones created by the user
       })
       .exec();
 

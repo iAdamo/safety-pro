@@ -20,18 +20,18 @@ export class MapController {
   constructor(private readonly mapService: MapService) {}
 
   @ApiTags('unsafezone')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('create')
-  create(
+  async create(
     @Body() createUnsafeZoneDto: CreateUnsafeZoneDto,
   ): Promise<UnsafeZone> {
     return this.mapService.create(createUnsafeZoneDto);
   }
 
   @ApiTags('unsafezone')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateUnsafeZoneDto: UpdateUnsafeZoneDto,
   ): Promise<UnsafeZone> {
@@ -39,7 +39,14 @@ export class MapController {
   }
 
   @ApiTags('unsafezone')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @Get('user/:userId')
+  async findAllByUser(@Param('userId') userId: string): Promise<UnsafeZone[]> {
+    return this.mapService.findAllByUser(userId);
+  }
+
+  @ApiTags('unsafezone')
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findUnsafeZonesWithProximity(
     @Param('id') id: string,
