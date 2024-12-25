@@ -23,16 +23,6 @@ export class MediaService {
    * @returns The created media document.
    */
   async create(CreateMediaDto: CreateMediaDto): Promise<Media> {
-      
-    // check if the user is valid
-    const user = await this.userServiceV1.findOne({
-        id: CreateMediaDto.uploadedBy,
-      });
-  
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
-  
       const createMedia = new this.mediaModel(CreateMediaDto);
     return createMedia.save();}
 
