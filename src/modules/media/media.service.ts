@@ -6,15 +6,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Media } from '@schemas/media.schema';
 import { CreateMediaDto } from '@dto/create-media.dto';
-import { UserServiceV1 } from '@modules/v1/user/user.service';
 import { UpdateMediaDto } from './dto/update-media.dto';
 
 @Injectable()
 export class MediaService {
      constructor(
        @InjectModel(Media.name)
-       private mediaModel: Model<Media>,
-       private userServiceV1: UserServiceV1,
+       private mediaModel: Model<Media>
      ) {}
 
     /**
