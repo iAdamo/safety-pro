@@ -6,13 +6,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Media } from '@schemas/media.schema';
 import { CreateMediaDto } from '@dto/create-media.dto';
+import { UserServiceV1 } from '@modules/v1/user/user.service';
 import { UpdateMediaDto } from './dto/update-media.dto';
 
 @Injectable()
 export class MediaService {
      constructor(
        @InjectModel(Media.name)
-       private mediaModel: Model<Media>
+       private mediaModel: Model<Media>,
+       private userServiceV1: UserServiceV1,
      ) {}
 
     /**
@@ -21,6 +23,15 @@ export class MediaService {
    * @returns The created media document.
    */
   async create(CreateMediaDto: CreateMediaDto): Promise<Media> {
+    // check if the user is valid
+    const user = await this.userServiceV1.findOne({
+        id: CreateMediaDto.uploadedBy,
+      });
+  
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+  
       const createMedia = new this.mediaModel(CreateMediaDto);
     return createMedia.save();}
 
