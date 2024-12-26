@@ -64,20 +64,20 @@ export class CreateUnsafeZoneDto {
   description?: string;
 
   @ApiProperty({
-    description: 'Audio evidence of the unsafe zone',
-    example: 'https://example.com/audio.mp3',
+    description: 'Media related to the unsafe zone',
+    example: ['60c72b2f9b1e8b001c8e4d3a'],
   })
   @IsOptional()
-  @IsString()
-  audio?: string;
+  @IsString({ each: true })
+  media?: string[];
 
   @ApiProperty({
-    description: 'Video evidence of the unsafe zone',
-    example: 'https://example.com/video.mp4',
+    description: 'Whether the unsafe zone has been deleted',
+    example: false,
   })
   @IsOptional()
-  @IsString()
-  video?: string;
+  @IsBoolean()
+  deleted?: boolean;
 
   @ApiProperty({
     description: 'Whether the unsafe zone has been resolved',

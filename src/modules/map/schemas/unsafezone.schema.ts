@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { GeoLocation, GeoLocationSchema } from '@schemas/location.schema';
 import { User } from '@schemas/users.schema';
-import { Media, MediaSchema } from '@schemas/media.schema';
 
 export type UnsafeZoneDocument = HydratedDocument<UnsafeZone>;
 
@@ -26,8 +25,8 @@ export class UnsafeZone {
   @Prop()
   description: string;
 
-  @Prop({ type: [Types.ObjectId], ref: 'Media' })
-  media: Media[];
+  @Prop({ default: false })
+  deleted: boolean;
 
   @Prop({ default: false })
   resolved: boolean;

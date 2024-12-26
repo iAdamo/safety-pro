@@ -10,7 +10,6 @@ export class UpdateUnsafeZoneDto extends PartialType(CreateUnsafeZoneDto) {
       coordinates: [-122.4194, 37.7749],
     },
   })
-
   @ApiProperty({
     description: 'Severity level of the unsafe zone',
     example: 'High',
@@ -29,28 +28,20 @@ export class UpdateUnsafeZoneDto extends PartialType(CreateUnsafeZoneDto) {
   description?: string;
 
   @ApiProperty({
-    description: 'Audio evidence of the unsafe zone',
-    example: 'https://example.com/audio.mp3',
+    description: 'Media related to the unsafe zone',
+    example: ['60c72b2f9b1e8b001c8e4d3a'],
   })
   @IsOptional()
-  @IsString()
-  audio?: string;
-
+  @IsString({ each: true })
+  media?: string[];
+  
   @ApiProperty({
-    description: 'Image evidence of the unsafe zone',
-    example: 'https://example.com/image.jpg',
+    description: 'Whether the unsafe zone has been deleted',
+    example: false,
   })
   @IsOptional()
-  @IsString()
-  image?: string;
-
-  @ApiProperty({
-    description: 'Video evidence of the unsafe zone',
-    example: 'https://example.com/video.mp4',
-  })
-  @IsOptional()
-  @IsString()
-  video?: string;
+  @IsBoolean()
+  deleted?: boolean;
 
   @ApiProperty({
     description: 'Whether the unsafe zone has been resolved',
