@@ -16,16 +16,16 @@ export class Media {
   @Prop([
     {
       url: { type: String, required: true },
-      medianame: { type: String, required: true },
-      mimetype: { type: String, required: true },
+      mediaName: { type: String, required: true },
+      mediaType: { type: String, required: true },
       size: { type: Number, required: true },
       storageType: { type: String, enum: ['db', 'cloud'], required: true },
     },
   ])
   media: {
     url: string;
-    medianame: string;
-    mimetype: string;
+    mediaName: string;
+    mediaType: string;
     size: number;
     storageType: string;
   }[];

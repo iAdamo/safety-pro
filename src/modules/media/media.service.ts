@@ -1,84 +1,48 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Media } from '@schemas/media.schema';
+import { Media, MediaDocument } from '@schemas/media.schema';
 import { CreateMediaDto } from '@dto/create-media.dto';
-import { UpdateMediaDto } from './dto/update-media.dto';
+import { DbStorageService } from '@services/dbstorage.service';
 
 @Injectable()
 export class MediaService {
   constructor(
-    @InjectModel(Media.name)
-    private mediaModel: Model<Media>,
-  ) {}
+    @InjectModel(Media.name) private readonly mediaModel: Model<MediaDocument>,
+    private readonly dbStorageService: DbStorageService) {}
 
-  /**
-   * Create a new media entry.
-   * @param createMediaDto - Data transfer object containing media details.
-   * @returns The created media document.
-   */
-  async create(CreateMediaDto: CreateMediaDto): Promise<Media> {
-    const createMedia = new this.mediaModel(CreateMediaDto);
-    return createMedia.save();
-  }
-
-  /**
-   * Find all media entries.
-   * @returns An array of media documents.
-   */
-  async findAll(): Promise<Media[]> {
-    const media = await this.mediaModel.find().exec();
-
-    if (!media) throw new NotFoundException('Media not found');
-
-    return this.mediaModel.find().exec();
-  }
-
-  /**
-   * Find a media entry by ID.
-   * @param id - The ID of the media entry.
-   * @returns The media document.
-   */
-  async findOne(id: string): Promise<Media> {
-    const media = await this.mediaModel.findById(id).exec();
-
-    if (!media) {
-      throw new NotFoundException('Media not found');
+  async uploadFile(file: Express.Multer.File, body: CreateMediaDto): Promise<Media> {
+    let url: string;
+    const useCloud = process.env.STORAGE_TYPE === 'cloud';
+    if (useCloud) {
+      // return this.cloudStorageService.uploadFile(file);
+    } else {
+      url = await this.dbStorageService.saveFile(
+        file,
+        body.media[0].mediaType as 'image' | 'video' | 'audio',
+        body.unsafeZoneId,
+      );
     }
-
-    return this.mediaModel.findById(id).exec();
+    const media = new this.mediaModel({
+      uploadedBy: body.uploadedBy,
+      unsafeZoneId: body.unsafeZoneId,
+      media: [{
+        url: url,
+        mediaName: file.originalname,
+        mediaType: file.mimetype,
+        size: file.size,
+        storageType: process.env.STORAGE_TYPE,
+      }],
+    });
+    return media.save();
   }
 
-  /**
-   * Update a media entry by ID.
-   * @param id - The ID of the media entry.
-   * @param updateMediaDto - Data transfer object containing updated media details.
-   * @returns The updated media document.
-   */
-  async update(id: string, updateMediaDto: UpdateMediaDto): Promise<Media> {
-    const media = await this.mediaModel.findById(id).exec();
+  async getMediaByZoneId(zoneId: string) {
+    if (!zoneId) throw new BadRequestException("Zone Id is missing");
 
-    if (!media) {
-      throw new NotFoundException('Media not found');
-    }
+    const media = await this.mediaModel.find({ unsafeZoneId: zoneId });
+    if (!media) throw new NotFoundException("No media found for this zone");
 
-    return this.mediaModel
-      .findByIdAndUpdate(id, updateMediaDto, { new: true })
-      .exec();
-  }
-
-  /**
-   * Delete a media entry by ID.
-   * @param id - The ID of the media entry.
-   * @returns The deleted media document.
-   */
-  async remove(id: string): Promise<Media> {
-    const media = await this.mediaModel.findById(id).exec();
-
-    if (!media) {
-      throw new NotFoundException('Media not found');
-    }
-
-    return this.mediaModel.findByIdAndDelete(id).exec();
+    return media;
   }
 }

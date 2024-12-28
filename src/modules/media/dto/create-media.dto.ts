@@ -11,12 +11,12 @@ class MediaItemDto {
   @ApiProperty({ description: 'Name of the media' })
   @IsNotEmpty()
   @IsString()
-  medianame: string;
+  mediaName: string;
 
-  @ApiProperty({ description: 'MIME type of the media' })
+  @ApiProperty({ description: 'Type of the media' })
   @IsNotEmpty()
   @IsString()
-  mimetype: string;
+  mediaType: string;
 
   @ApiProperty({ description: 'Size of the media in bytes' })
   @IsNotEmpty()

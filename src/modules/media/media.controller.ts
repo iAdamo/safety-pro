@@ -1,5 +1,7 @@
-import { Controller } from '@nestjs/common';
 import {
+  Controller,
+  UploadedFile,
+  UseInterceptors,
   Body,
   Post,
   Patch,
@@ -8,37 +10,32 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { MediaService } from '@services/media.service';
 import { CreateMediaDto } from '@dto/create-media.dto';
-import { UpdateMediaDto } from './dto/update-media.dto';
-import { Media } from '@schemas/media.schema';
+import { JwtAuthGuard } from '@modules/jwt/jwt.guard';
 
 @Controller('media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
   @ApiTags('media')
-  // @UseGuards(JwtAuthGuard)
-  @Post('create')
-  create(@Body() createMediaDto: CreateMediaDto): Promise<Media> {
-    return this.mediaService.create(createMediaDto);
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('upload')
+  async uploadMedia(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: CreateMediaDto,
+  ) {
+    return this.mediaService.uploadFile(file, body);
   }
 
   @ApiTags('media')
-  // @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() UpdateMediaDto: UpdateMediaDto,
-  ): Promise<Media> {
-    return this.mediaService.update(id, UpdateMediaDto);
+  @UseGuards(JwtAuthGuard)
+  @Get(':unsafeZoneId')
+  async getMedia(@Param('unsafeZoneId') unsafeZoneId: string) {
+    return this.mediaService.getMediaByZoneId(unsafeZoneId);
   }
 
-  @ApiTags('media')
-  // @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.mediaService.findOne(id);
-  }
 }

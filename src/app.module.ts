@@ -7,9 +7,15 @@ import { UsersModule } from '@modules/users.module';
 import { AuthModule } from '@modules/auth.module';
 import { MapModule } from './modules/map/map.module';
 import { MediaModule } from './modules/media/media.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'media'),
+      serveRoot: '/media',
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [databaseConfig],

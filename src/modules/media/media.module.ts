@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DbstorageService } from '@services/dbstorage.service';
+import { DbStorageService } from '@services/dbstorage.service';
 import { CloudstorageService } from '@services/cloudstorage.service';
 import { MediaService } from '@services/media.service';
 import { MediaController } from '@controllers/media.controller';
@@ -12,7 +12,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       { name: Media.name, schema: MediaSchema },
     ]),
   ],
-  providers: [DbstorageService, CloudstorageService, MediaService],
+  providers: [DbStorageService, CloudstorageService, MediaService],
   controllers: [MediaController],
   exports: [MongooseModule],
 })
