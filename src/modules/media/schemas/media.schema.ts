@@ -18,8 +18,8 @@ export class Media {
       url: { type: String, required: true },
       mediaName: { type: String, required: true },
       mediaType: { type: String, required: true },
-      size: { type: Number, required: true },
-      storageType: { type: String, enum: ['db', 'cloud'], required: true },
+      size: { type: Number },
+      storageType: { type: String, enum: ['db', 'cloud'], default: 'db' },
     },
   ])
   media: {

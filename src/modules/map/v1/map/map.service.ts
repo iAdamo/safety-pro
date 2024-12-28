@@ -57,6 +57,12 @@ export class MapService {
       .exec();
   }
 
+  async findOne(id: string): Promise<UnsafeZone> {
+    const unsafeZone = await this.unsafeZoneModel.findById(id).exec();
+    if (!unsafeZone)  throw new NotFoundException('Unsafe zone not found');
+    return unsafeZone;
+  }
+
   /**
    * Find all by a user
    * @param id The user ID

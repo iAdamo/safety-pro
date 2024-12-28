@@ -15,6 +15,6 @@ import { MongooseModule } from '@nestjs/mongoose';
   ],
   providers: [MapService, UserServiceV1],
   controllers: [MapController],
-  exports: [MongooseModule],
+  exports: [MongooseModule, MapService],
 })
 export class MapModule {}

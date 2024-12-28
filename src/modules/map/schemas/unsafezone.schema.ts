@@ -31,7 +31,7 @@ export class UnsafeZone {
   @Prop({ default: false })
   resolved: boolean;
 
-  @Prop({ default: false })
+  @Prop({ default: true })
   active: boolean;
 }
 
