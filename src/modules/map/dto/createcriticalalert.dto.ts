@@ -17,14 +17,6 @@ export class CreateCriticalAlertDto {
 reportedBy: string;
 
 @ApiProperty({
-    description: 'Title of the critical alert',
-    example: 'Fire hazard',
-})
-@IsOptional()
-@IsString()
-title?: string;
-
-@ApiProperty({
     description: 'Location of the critical alert',
     example: {
         type: 'Point',
@@ -39,7 +31,7 @@ location: {
 
 @ApiProperty({
     description: 'Radius of the critical alert',
-    example: 10,
+    example: 100,
   })
 @IsOptional()
 @IsNumber()
@@ -49,25 +41,9 @@ radius?: number;
     description: 'Is this a critical alert>',
     example: true,
   })
-@IsOptional()
+@IsNotEmpty()
 @IsBoolean()
 iscritical?: boolean;
-
-@ApiProperty({
-    description: 'Description of the critical alert',
-    example: 'There is a fire hazard in the area',
-})
-@IsOptional()
-@IsString()
-description?: string;
-
-@ApiProperty({
-    description: 'Media related to the critical alert',
-    example: ['60c72b2f9b1e8b001c8e4d3a'],
-})
-@IsOptional()
-@IsString({ each: true })
-media?: string[];
 
 @ApiProperty({
     description: 'Whether the critical alert has been resolved',
