@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UnsafeZone, UnsafeZoneDocument } from '@schemas/unsafezone.schema';
-import { CreateUnsafeZoneDto } from '@dto/createunsafe.dto';
-import { UpdateUnsafeZoneDto } from '@dto/updateunsafe.dto';
+import { UnsafeZone, UnsafeZoneDocument } from 'src/modules/zones/schemas/unsafezone.schema';
+import { CreateUnsafeZoneDto } from 'src/modules/zones/dto/createunsafe.dto';
+import { UpdateUnsafeZoneDto } from 'src/modules/zones/dto/updateunsafe.dto';
 import { UserServiceV1 } from '@services/user.service';
 import { NotFoundException } from '@nestjs/common';
 import { isWithProximity } from 'src/utils/iswithproximity';
 
 @Injectable()
-export class MapService {
+export class UnsafeZoneService {
   constructor(
     @InjectModel(UnsafeZone.name)
     private unsafeZoneModel: Model<UnsafeZoneDocument>,

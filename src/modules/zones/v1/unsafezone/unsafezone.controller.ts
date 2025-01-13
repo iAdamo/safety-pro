@@ -9,15 +9,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { MapService } from '@services/map.service';
-import { CreateUnsafeZoneDto } from '@dto/createunsafe.dto';
-import { UpdateUnsafeZoneDto } from '@dto/updateunsafe.dto';
-import { UnsafeZone } from '@schemas/unsafezone.schema';
+import { UnsafeZoneService } from 'src/modules/zones/v1/unsafezone/unsafezone.service';
+import { CreateUnsafeZoneDto } from 'src/modules/zones/dto/createunsafe.dto';
+import { UpdateUnsafeZoneDto } from 'src/modules/zones/dto/updateunsafe.dto';
+import { UnsafeZone } from 'src/modules/zones/schemas/unsafezone.schema';
 import { JwtAuthGuard } from '@modules/jwt/jwt.guard';
 
 @Controller('unsafezone')
-export class MapController {
-  constructor(private readonly mapService: MapService) {}
+export class UnsafeZoneController {
+  constructor(private readonly unsafezoneService: UnsafeZoneService) {}
 
   @ApiTags('unsafezone')
   @UseGuards(JwtAuthGuard)
@@ -25,7 +25,7 @@ export class MapController {
   async create(
     @Body() createUnsafeZoneDto: CreateUnsafeZoneDto,
   ): Promise<UnsafeZone> {
-    return this.mapService.create(createUnsafeZoneDto);
+    return this.unsafezoneService.create(createUnsafeZoneDto);
   }
 
   @ApiTags('unsafezone')
@@ -35,14 +35,14 @@ export class MapController {
     @Param('id') id: string,
     @Body() updateUnsafeZoneDto: UpdateUnsafeZoneDto,
   ): Promise<UnsafeZone> {
-    return this.mapService.update(id, updateUnsafeZoneDto);
+    return this.unsafezoneService.update(id, updateUnsafeZoneDto);
   }
 
   @ApiTags('unsafezone')
   @UseGuards(JwtAuthGuard)
   @Get('user/:userId')
   async findAllByUser(@Param('userId') userId: string): Promise<UnsafeZone[]> {
-    return this.mapService.findAllByUser(userId);
+    return this.unsafezoneService.findAllByUser(userId);
   }
 
   @ApiTags('unsafezone')
@@ -54,6 +54,6 @@ export class MapController {
     @Query('userLong') userLong: number,
     @Query('proximity') proximity: number,
   ) {
-    return this.mapService.findUnsafeZones(id, userLat, userLong, proximity);
+    return this.unsafezoneService.findUnsafeZones(id, userLat, userLong, proximity);
   }
 }

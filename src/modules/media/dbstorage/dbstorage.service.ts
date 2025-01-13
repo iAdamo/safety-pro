@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { UserServiceV1 } from '@services/user.service';
-import { MapService } from '@services/map.service';
+import { UnsafeZoneService } from '@modules/v1/unsafezone/unsafezone.service';
 
 @Injectable()
 export class DbStorageService {
@@ -11,7 +11,7 @@ export class DbStorageService {
 
   constructor(
     private readonly userService: UserServiceV1, // Service to fetch user details
-    private readonly unsafeZoneService: MapService // Service to fetch unsafe zone details
+    private readonly unsafeZoneService: UnsafeZoneService // Service to fetch unsafe zone details
   ) {}
 
   async saveFile(

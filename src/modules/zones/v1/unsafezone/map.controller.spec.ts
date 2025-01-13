@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MapController } from './unsafezone.controller';
+import { UnsafeZoneController } from './unsafezone.controller';
 
 describe('MapController', () => {
-  let controller: MapController;
+  let controller: UnsafeZoneController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [MapController],
+      controllers: [UnsafeZoneController],
     }).compile();
 
-    controller = module.get<MapController>(MapController);
+    controller = module.get<UnsafeZoneController>(UnsafeZoneController);
   });
 
   it('should be defined', () => {

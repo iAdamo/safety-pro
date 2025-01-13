@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { User } from '@schemas/users.schema';
-import { UnsafeZone } from '@modules/schemas/unsafezone.schema';
+import { UnsafeZone } from 'src/modules/zones/schemas/unsafezone.schema';
 
 export type MediaDocument = HydratedDocument<Media>;
 
