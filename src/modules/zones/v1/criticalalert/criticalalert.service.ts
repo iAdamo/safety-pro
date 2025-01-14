@@ -55,4 +55,81 @@ export class CriticalAlertService {
         })
         .exec();
     }
+    /**
+     * Find a critical alert that was created
+     * @param id The ID of the critical alert
+     * @returns The updated critical alert
+     */
+    async findone(id: string
+    ): Promise<CriticalAlert> {
+        const criticalalert = await this.criticalAlertModel.findById(id).exec();
+        if (!criticalalert) throw new NotFoundException('Critical alert can not be found')
+            return criticalalert;
+    }
+
+    /**
+   * Find all by a user
+   * @param id The user ID
+   * @returns The critical alerts created by the user
+   */
+  async findAllByUser(userId: string
+  ): Promise<CriticalAlert[]> {
+    const criticalalerts = await this.criticalAlertModel
+    .find({ reportedBy: userId })
+    .exec();
+    if (!criticalalerts || criticalalerts.length === 0) {
+        throw new NotFoundException('No critical alert found by this user')
+    }
+    return criticalalerts;
+  }
+
+  /**
+   * Find critical alert near a user
+   * @param id The user ID
+   * @param userLat The user's latitude
+   * @param userLong The user's longitude
+   * @param proximityRange The user's proximity range
+   * @returns The critical alerts near the user
+   */
+  async findCriticalAlert(
+    id: string,
+    userLat: number,
+    userLong: number,
+    proximityRange: number,
+  ) {
+    if (id || !userLat || !userLong) {
+        throw new NotFoundException('Query is required');
+    }
+
+    let userRange = proximityRange;
+    if (!proximityRange) {
+        const user = await this.userServiceV1.findOne({ id });
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+        userRange = user.proximityRange;
+    }
+
+    const maxRadius = userRange + 100;
+    const criticalalerts = await this.criticalAlertModel
+    .find({
+        location: {
+            $geoWithin: {
+                $centerSphere: [[userLong, userLat], maxRadius / 6371],
+            },
+        },
+        reportedBy: { $me: id }, //Excluding critical alerts created by the user 
+    }).exec();
+
+    return criticalalerts.filter((criticalalert) =>
+        isWithProximity(
+            userLat,
+            userLong,
+            criticalalert.location.coordinates[1],
+            criticalalert.location.coordinates[0],
+            userRange,
+            criticalalert.radius,   
+        ),
+    );
+  };
 }
