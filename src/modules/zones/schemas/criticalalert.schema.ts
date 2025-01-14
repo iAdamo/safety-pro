@@ -8,7 +8,7 @@ export type CriticalAlertDocument = HydratedDocument<CriticalAlert>;
 @Schema({ timestamps: true })
 export class CriticalAlert {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  markedBy: User;
+  reportedBy: User;
 
   @Prop()
   title: string;
